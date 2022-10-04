@@ -8,6 +8,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.time.Duration;
+
 @DisplayName("Testes Web do Módulo de Produtos")
 public class produtosTest {
     @Test
@@ -18,6 +20,10 @@ public class produtosTest {
             WebDriver navegador = new ChromeDriver();
             //Vou maximimar a tela
             navegador.manage().window().maximize();
+
+            //Vou definir um tempo de espera padrão de 5 segundos - Espere antes de falhar o meu Teste);
+            navegador.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+
 
         //Navegar para a página da lojinha Web
             navegador.get("http://165.227.93.41/lojinha-web/v2/");
@@ -46,5 +52,8 @@ public class produtosTest {
         //Validar a mensagem de erro exibida
             String mensagemToats = navegador.findElement(By.cssSelector(".toast.rounded")).getText();
             Assertions.assertEquals("O valor do produto deve estar entre R$ 0,01 e R$ 7.000,00", mensagemToats );
+
+            //Fechando o navegador
+            navegador.quit();
     }
 }
