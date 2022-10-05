@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import paginas.LoginPage;
 
 import java.time.Duration;
 
@@ -35,32 +36,33 @@ public class produtosTest {
 
 
         //Fazer login
-            this.navegador.findElement(By.cssSelector("label[for='usuario']")).click(); //Digitando no campo usuário
-            navegador.findElement(By.id("usuario")).sendKeys("admin"); //SendKeys sig digite
-
-            navegador.findElement(By.cssSelector("label[for='senha']")).click(); //Digitando no campo senha
-            navegador.findElement(By.id("senha")).sendKeys("admin");
-
-            navegador.findElement(By.cssSelector("button[type='submit']")).click();
+        String mensagemApresentada = new LoginPage(navegador)
+                .informarOUsuario("admin")
+                .informarASenha("admin")
+                .submeterFormularioDeLogin()
 
         //Vou para a tela de registro de produto
-            navegador.findElement(By.linkText("ADICIONAR PRODUTO")).click();
+                .acessarOFormularioDeNovoProduto()
 
         //Preencher dados do produto e o valor será igual a zero
-            navegador.findElement(By.id("produtonome")).sendKeys("Livro Harry Potter");
-            navegador.findElement(By.name("produtovalor")).sendKeys("000");
-            navegador.findElement(By.id("produtocores")).sendKeys("Preto, Branco");
+                .informarNomeDoProduto("Coleção de Livros Harry Potter")
+                .informarOPrecoDoProduto("000")
+                .informarAsCoresDoProduto("Preto, Azul, Branco")
 
         //Submeter o formulário
-            navegador.findElement(By.cssSelector("button[type='submit']")).click();
-
+                .SubmeterFormularioDeAdicaoComErro()
 
         //Validar a mensagem de erro exibida
-            String mensagemToats = navegador.findElement(By.cssSelector(".toast.rounded")).getText();
-            Assertions.assertEquals("O valor do produto deve estar entre R$ 0,01 e R$ 7.000,00", mensagemToats );
-
-
+                .capturarMensagemApresentada();
+            Assertions.assertEquals("O valor do produto deve estar entre R$ 0,01 e R$ 7.000,00", mensagemApresentada );
     }
+
+
+
+
+
+
+
         //Fechando o navegador
     @AfterEach
         public void afterEach(){
