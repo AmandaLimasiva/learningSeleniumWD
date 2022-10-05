@@ -69,10 +69,28 @@ public class produtosTest {
                 .capturarMensagemApresentada();
 
         Assertions.assertEquals("O valor do produto deve estar entre R$ 0,01 e R$ 7.000,00", mensagemApresentada);
+    }
 
+    @Test
+    @DisplayName("Posso adicionar Produtos com valores validos - R$ 0,01 e R$ 7.000,00")
+    public void testRegistrarProdutoComValoresValidos(){
+            String mensagemApresentada = new LoginPage(navegador)
+                .informarOUsuario("admin")
+                .informarASenha("admin")
+                .submeterFormularioDeLogin()
+                .acessarOFormularioDeNovoProduto()
+                .informarNomeDoProduto(" 72 Volumes do Mangá Naruto")
+                .informarOPrecoDoProduto("200")
+                .informarAsCoresDoProduto("Branco, Dourado")
+                .SubmeterFormularioDeAdicaoComSucesso()
+                    .capturarMensagemApresentada();
 
+            //Produto Adicionado com sucesso
+                Assertions.assertEquals("Produto adicionado com sucesso", mensagemApresentada);
 
     }
+
+
 
     //Fechando o navegador
     @AfterEach

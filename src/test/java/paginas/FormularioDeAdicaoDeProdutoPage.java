@@ -28,6 +28,10 @@ public class FormularioDeAdicaoDeProdutoPage {
    public ListaDeProdutosPage SubmeterFormularioDeAdicaoComErro(){
        navegador.findElement(By.cssSelector("button[type='submit']")).click();
        return new ListaDeProdutosPage(navegador);
-
    }
+
+    public FormularioDeEdicaoDeProdutoPage SubmeterFormularioDeAdicaoComSucesso(){
+        navegador.findElement(By.cssSelector("button[type='submit']")).click();
+        return new FormularioDeEdicaoDeProdutoPage(navegador);
+    }
 }
