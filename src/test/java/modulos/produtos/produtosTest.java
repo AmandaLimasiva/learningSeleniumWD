@@ -2,14 +2,13 @@ package modulos.produtos;
 
 
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import paginas.LoginPage;
 
 import java.time.Duration;
 
-@DisplayName("Testes Web do Módulo de Produtos")
+@DisplayName("Testes Web do Modulo de Produtos")
 public class produtosTest {
 
         private WebDriver navegador;
@@ -33,8 +32,6 @@ public class produtosTest {
     @Test
     @DisplayName("Nao sera permitido registrar um produto com valor igual a zero")
     public void testNaoPermitidoRegistrarProdutoComValorIgualAZero(){
-
-
         //Fazer login
         String mensagemApresentada = new LoginPage(navegador)
                 .informarOUsuario("admin")
@@ -57,13 +54,27 @@ public class produtosTest {
             Assertions.assertEquals("O valor do produto deve estar entre R$ 0,01 e R$ 7.000,00", mensagemApresentada );
     }
 
+    @Test
+    @DisplayName("Registrar um produto com valor acima de R$7.000,01")
+    public void testRegistrarProdutoComValorAcimaDeSeteMil() {
+        String mensagemApresentada = new LoginPage(navegador)
+                .informarOUsuario("admin")
+                .informarASenha("admin")
+                .submeterFormularioDeLogin()
+                .acessarOFormularioDeNovoProduto()
+                .informarNomeDoProduto("Coleção de Livros Sandman")
+                .informarOPrecoDoProduto("700002")
+                .informarAsCoresDoProduto("Preto, Branco")
+                .SubmeterFormularioDeAdicaoComErro()
+                .capturarMensagemApresentada();
+
+        Assertions.assertEquals("O valor do produto deve estar entre R$ 0,01 e R$ 7.000,00", mensagemApresentada);
 
 
 
+    }
 
-
-
-        //Fechando o navegador
+    //Fechando o navegador
     @AfterEach
         public void afterEach(){
                 navegador.quit();
