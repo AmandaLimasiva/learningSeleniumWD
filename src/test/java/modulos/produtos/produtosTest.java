@@ -1,9 +1,7 @@
 package modulos.produtos;
 
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -12,24 +10,32 @@ import java.time.Duration;
 
 @DisplayName("Testes Web do Módulo de Produtos")
 public class produtosTest {
+
+        private WebDriver navegador;
+
+        @BeforeEach
+        public void beforeEach(){
+                //Abrir o navagador
+                System.setProperty("webdriver.chrome.driver", "C:\\drives\\ver106\\chromedriver.exe"); //é daqui oh :)
+                this.navegador = new ChromeDriver();
+                //Vou maximimar a tela
+                this.navegador.manage().window().maximize();
+
+                //Vou definir um tempo de espera padrão de 5 segundos - Espere antes de falhar o meu Teste);
+                this.navegador.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+
+
+                //Navegar para a página da lojinha Web
+                this.navegador.get("http://165.227.93.41/lojinha-web/v2/");
+        }
+
     @Test
     @DisplayName("Nao sera permitido registrar um produto com valor igual a zero")
     public void testNaoPermitidoRegistrarProdutoComValorIgualAZero(){
-        //Abrir o navagador
-            System.setProperty("webdriver.chrome.driver", "C:\\drives\\ver106\\chromedriver.exe"); //é daqui oh :)
-            WebDriver navegador = new ChromeDriver();
-            //Vou maximimar a tela
-            navegador.manage().window().maximize();
 
-            //Vou definir um tempo de espera padrão de 5 segundos - Espere antes de falhar o meu Teste);
-            navegador.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-
-
-        //Navegar para a página da lojinha Web
-            navegador.get("http://165.227.93.41/lojinha-web/v2/");
 
         //Fazer login
-            navegador.findElement(By.cssSelector("label[for='usuario']")).click(); //Digitando no campo usuário
+            this.navegador.findElement(By.cssSelector("label[for='usuario']")).click(); //Digitando no campo usuário
             navegador.findElement(By.id("usuario")).sendKeys("admin"); //SendKeys sig digite
 
             navegador.findElement(By.cssSelector("label[for='senha']")).click(); //Digitando no campo senha
@@ -53,7 +59,12 @@ public class produtosTest {
             String mensagemToats = navegador.findElement(By.cssSelector(".toast.rounded")).getText();
             Assertions.assertEquals("O valor do produto deve estar entre R$ 0,01 e R$ 7.000,00", mensagemToats );
 
-            //Fechando o navegador
-            navegador.quit();
+
     }
+        //Fechando o navegador
+    @AfterEach
+        public void afterEach(){
+                navegador.quit();
+    }
+
 }
